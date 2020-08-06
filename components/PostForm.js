@@ -1,20 +1,38 @@
 import useForm from '../utils/useForm'
 import axios from 'axios'
-import {useContext} from 'react'
+import {useContext, useEffect} from 'react'
 import {PostContext} from '../contexts/PostContext'
+import { useRouter } from 'next/router'
 
 
-const PostForm = () => {
+const PostForm = ({ buttonValue, post, newPost }) => {
   const [values, setValues, handleChange] = useForm()
-  const {posts, setPosts} = useContext(PostContext)
+  const { posts, setPosts } = useContext(PostContext)
+
+  useEffect(() => {
+    setValues(post)
+
+  }, [])
 
   const createPost = (event) => {
       event.preventDefault()
-      axios.post('/api/posts', values).then((res) => {
+      if(newPost){
+        axios.post('/api/posts', values).then((res) => {
+            setPosts((posts) => [...posts,res.data.data])
+        }).catch((err) => {
+            console.log(err.message);
+        })
+      } else {
+
+        axios.put('/api/posts/' + values._id, values)
+        .then((res) => {
           setPosts((posts) => [...posts,res.data.data])
-      }).catch((err) => {
-          console.log(err.message);
-      })
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
+
       console.log(values);
       setValues({})
   }
@@ -30,7 +48,7 @@ const PostForm = () => {
                 onChange={handleChange}
                 value={values.author || ""} className="border-4 border-black">
       </textarea>
-      <input type="submit" />
+      <input type="submit" value={buttonValue}/>
     </form>
   )
 }

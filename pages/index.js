@@ -9,9 +9,9 @@ const Index = () => {
 
   return <div>
   <h1>Index</h1>
-  <PostForm />
   <div className="flex justify-around text-center">
-  {posts.map((post,index) => {
+  {posts
+    ? posts.map((post,index) => {
       return (
           <div>
             <h1 className="text-2xl font-bold">{post.title}</h1>
@@ -19,7 +19,8 @@ const Index = () => {
             <p>author: {post.author}</p>
           </div>
       )
-  })}
+  })
+  : "Please Refresh Page"}
   </div>
   </div>
 };
