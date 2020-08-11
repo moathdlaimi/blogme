@@ -9,7 +9,7 @@ const Dashboard = () => {
   const {posts, setPosts} = useContext(PostContext)
     return (
       <div>
-        <h1>Dashboard</h1>
+        <h1>My Posts</h1>
         {posts
           ? posts.map((post,index) => {
             return (
